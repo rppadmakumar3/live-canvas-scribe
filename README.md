@@ -14,14 +14,14 @@ Storyboard Live is a live whiteboard powered by voice and AI. You speak an expla
 
 - Voice narration via the browser's Web Speech API, with a typed-input fallback
 - AI interprets meaning (not just words) and builds a visual scene from a single LLM call
-- Elements: text, shapes, sticky notes, icons, illustrations, equations (KaTeX), code blocks (syntax-highlighted), connectors with labels
+- Elements: text, shapes, sticky notes, icons, illustrations, equations (KaTeX), code blocks, connectors with labels
 - Manual drag, resize, and edit on any element at any time — the canvas is always yours
 - Beat grouping: each narration pause closes a story segment
 - Scroll-driven story playback (`Preview as story`) — step through the canvas as it was built
 - Four canvas themes: Light, Dark, Sepia, Blackboard
 - Freehand drawing tools and an eraser
 - Full undo support (`Cmd/Ctrl + Z`)
-- 30+ WebMCP tools registered on `document.modelContext` — inspectable via the in-app tools badge
+- 32 WebMCP tools registered on `document.modelContext` — inspectable via the in-app tools badge
 - State persisted to `localStorage` across sessions
 
 ---
@@ -33,11 +33,10 @@ Storyboard Live is a live whiteboard powered by voice and AI. You speak an expla
 | Meta-framework | TanStack Start |
 | UI | React 19 + Tailwind CSS 4 + Radix UI |
 | Build | Vite 8 |
-| AI gateway | OpenRouter (Gemini 2.5 Flash by default) |
+| AI model | minimax/minimax-m3:free |
 | Voice input | Web Speech API |
 | Sketch rendering | Rough.js |
 | Math rendering | KaTeX |
-| Deployment | Cloudflare Pages (via Nitro) |
 
 ---
 
@@ -55,7 +54,6 @@ Create a `.env` file at the project root:
 
 ```env
 VITE_OPENROUTER_API_KEY=your_openrouter_key_here
-VITE_OPENROUTER_MODEL=google/gemini-2.5-flash   # optional, this is the default
 ```
 
 If `VITE_OPENROUTER_API_KEY` is absent, the app falls back to a local heuristic agent — still functional for demo topics like the water cycle.
@@ -72,7 +70,7 @@ npm run preview   # Preview the production build locally
 
 ```
 Voice narration
-  → Gemini (1 LLM call) → VisualScenePlan JSON
+  → LLM (1 call) → VisualScenePlan JSON
   → Layout Engine (code) → pixel positions
   → Asset Resolver (code + Iconify) → SVG / emoji
   → WebMCP tools → Canvas state
@@ -98,19 +96,39 @@ npm run format     # Prettier
 
 ## WebMCP tools
 
-The app registers 30+ tools on `document.modelContext` including:
+The app registers 32 tools on `document.modelContext`. Click the **WebMCP Tools** badge in the app header to inspect all schemas live.
 
 | Tool | Purpose |
 |---|---|
-| `get_canvas_state` | Returns all current elements and their positions |
+| `get_canvas_state` | Returns all elements with pixel coordinates so new ones can be placed without overlap |
 | `add_text_block` | Adds a text element with reveal animation |
-| `add_shape` | Adds a shape (circle, rect, arrow, icon) |
-| `add_connector` | Draws a labeled connector between two elements |
-| `apply_visual_scene` | Batch operation — layout + assets in one call |
-| `add_illustration` | Places an educational SVG illustration |
+| `add_math_block` | Adds a rendered LaTeX equation (KaTeX) |
+| `add_shape` | Adds a shape — circle, rectangle, arrow, or icon |
+| `add_sketch` | Adds a freehand stroke from a template or custom point data |
+| `add_image` | Adds an image from a URL, data URL, or bundled icon name |
+| `add_sticky_note` | Adds a colored sticky note (amber, teal, coral) |
+| `add_highlight` | Adds a semi-transparent highlight over an area or element |
+| `add_illustration` | Adds an educational SVG illustration by concept name (sun, cell, browser…) |
 | `add_code_block` | Adds a syntax-highlighted code block |
-| `add_math` | Renders a LaTeX equation via KaTeX |
+| `add_emoji` | Places a native emoji as a colorful icon with an optional label |
+| `add_flowchart_node` | Adds a standard flowchart symbol (process, decision, start/end, input/output) |
+| `add_frame` | Adds a labeled frame that groups elements and moves them as one unit |
+| `add_connector` | Draws a labeled connector line between two elements with draw-on animation |
+| `add_timeline_event` | Adds a dated event marker for timeline layouts |
+| `add_callout` | Adds a speech-bubble callout pointing at an existing element |
+| `apply_visual_scene` | Batch operation — takes a full VisualScenePlan, runs layout + asset resolution, creates everything atomically |
+| `update_element` | Updates content, position, size, or color of an existing element |
+| `update_text_style` | Updates bold, size, or color of an existing text element |
+| `update_connector` | Relabels an existing connector |
+| `set_connector_style` | Sets a connector to dashed, a custom color, or thicker weight |
+| `set_fill_color` | Fills a shape with a color using a sweep-in animation |
+| `set_layer_order` | Moves an element to the front or back of the layer stack |
+| `set_theme` | Switches the canvas theme (light / dark / sepia / blackboard) |
+| `emphasize_element` | Briefly pulses an element to draw attention back to it |
+| `duplicate_element` | Clones an element with a slight offset |
+| `pin_element` | Locks or unlocks an element's position |
+| `remove_element` | Deletes an element by id |
+| `clear_region` | Removes all elements within a rectangular area |
+| `clear_canvas` | Clears all elements and connectors |
 | `group_into_beat` | Closes the current elements into a named story beat |
-| `export_story` | Compiles beats into scroll-driven playback |
-
-Click the **WebMCP Tools** badge in the app header to inspect all registered tools and their schemas.
+| `undo` | Reverts the last canvas change (up to 20 steps) |
