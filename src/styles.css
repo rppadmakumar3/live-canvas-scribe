@@ -2,11 +2,20 @@
 @source "../src";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "Excalifont";
+  src: url("https://cdn.jsdelivr.net/npm/@excalidraw/excalidraw/dist/excalidraw-assets/Excalifont-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
  * Storyboard Live design system — warm paper, deep ink, ochre accent.
- * All colors are oklch tokens; components never hardcode colors.
+ * All colors are hex/oklch tokens; components never hardcode colors.
  */
 
 @theme inline {
@@ -34,50 +43,123 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-highlight: var(--accent-highlight);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
-  --shadow-sketch: 0 2px 0 0 var(--ink-shadow);
-  --animate-reveal: reveal 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
-  --animate-draw-on: draw-on 0.7s ease-out both;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-handwritten: "Excalifont", "Kalam", "Comic Sans MS", cursive;
+  --shadow-sketch: 0 2px 4px 0 var(--ink-shadow);
+  --animate-reveal: reveal 220ms ease-out both;
+  --animate-draw-on: draw-on 300ms ease-out both;
 }
 
 :root {
   --radius: 0.75rem;
-  --paper: oklch(0.972 0.014 88);
-  --chalk: oklch(0.995 0.005 90);
-  --ink: oklch(0.26 0.03 260);
-  --ink-soft: oklch(0.48 0.03 260);
-  --ink-shadow: oklch(0.26 0.03 260 / 12%);
+  --font-handwritten: "Excalifont", "Kalam", "Comic Sans MS", cursive;
+
+  --paper: #f7f5ef;
+  --chalk: #ffffff;
+  --ink: #2b2a28;
+  --ink-soft: #5d5a53;
+  --ink-shadow: rgba(43, 42, 40, 0.08);
   --background: var(--paper);
   --foreground: var(--ink);
   --card: var(--chalk);
   --card-foreground: var(--ink);
   --popover: var(--chalk);
   --popover-foreground: var(--ink);
-  --primary: oklch(0.32 0.04 258);
-  --primary-foreground: oklch(0.985 0.01 90);
-  --secondary: oklch(0.94 0.02 88);
+  --primary: #2b2a28;
+  --primary-foreground: #f7f5ef;
+  --secondary: #eae6db;
   --secondary-foreground: var(--ink);
-  --muted: oklch(0.94 0.015 88);
+  --muted: #eae6db;
   --muted-foreground: var(--ink-soft);
-  --accent: oklch(0.66 0.16 52);
-  --accent-foreground: oklch(0.99 0.01 90);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0.01 90);
-  --border: oklch(0.88 0.02 85);
-  --input: oklch(0.88 0.02 85);
-  --ring: oklch(0.66 0.16 52);
+  --accent: #2b6e5c;
+  --accent-highlight: #c97a2b;
+  --accent-foreground: #ffffff;
+  --destructive: #c93b2b;
+  --destructive-foreground: #ffffff;
+  --border: #dad5c8;
+  --input: #dad5c8;
+  --ring: #2b6e5c;
+}
+
+/* ── Canvas themes ──────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+  --paper: #1c1c1e;
+  --chalk: #2c2c2e;
+  --ink: #f0f0f0;
+  --ink-soft: #a0a0a0;
+  --ink-shadow: rgba(0, 0, 0, 0.3);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--chalk);
+  --card-foreground: var(--ink);
+  --popover: var(--chalk);
+  --popover-foreground: var(--ink);
+  --primary: #f0f0f0;
+  --primary-foreground: #1c1c1e;
+  --secondary: #3a3a3c;
+  --secondary-foreground: var(--ink);
+  --muted: #3a3a3c;
+  --muted-foreground: var(--ink-soft);
+  --border: #48484a;
+  --input: #48484a;
+}
+
+[data-theme="sepia"] {
+  --paper: #f5e6c8;
+  --chalk: #fdf5e4;
+  --ink: #3b2a1a;
+  --ink-soft: #6b4c30;
+  --ink-shadow: rgba(59, 42, 26, 0.1);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--chalk);
+  --card-foreground: var(--ink);
+  --secondary: #ecdfc5;
+  --muted: #ecdfc5;
+  --border: #d4b896;
+  --input: #d4b896;
+  --accent: #7a4a1e;
+  --accent-highlight: #c97a2b;
+  --ring: #7a4a1e;
+}
+
+[data-theme="blackboard"] {
+  --paper: #1e3320;
+  --chalk: #243c27;
+  --ink: #e8f5e9;
+  --ink-soft: #a5c8a8;
+  --ink-shadow: rgba(0, 0, 0, 0.4);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--chalk);
+  --card-foreground: var(--ink);
+  --popover: var(--chalk);
+  --popover-foreground: var(--ink);
+  --primary: #e8f5e9;
+  --primary-foreground: #1e3320;
+  --secondary: #2d4a30;
+  --secondary-foreground: var(--ink);
+  --muted: #2d4a30;
+  --muted-foreground: var(--ink-soft);
+  --accent: #66bb6a;
+  --accent-highlight: #ffcc02;
+  --accent-foreground: #1e3320;
+  --border: #3a5c3e;
+  --input: #3a5c3e;
+  --ring: #66bb6a;
 }
 
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: scale(0.82);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
@@ -100,14 +182,38 @@
 
 @utility canvas-paper {
   background-color: var(--paper);
-  background-image:
-    radial-gradient(circle at 1px 1px, oklch(0.26 0.03 260 / 9%) 1px, transparent 0);
-  background-size: 26px 26px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(43, 42, 40, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
   border: 1px solid var(--border);
 }
 
 @utility pulse-dot {
   animation: pulse 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes processing-shimmer {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 40%, transparent); }
+}
+
+@utility canvas-processing {
+  animation: processing-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px var(--accent-highlight);
+    transform: scale(1.02);
+  }
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 600ms ease-out;
 }
 
 @layer base {
@@ -122,6 +228,7 @@
   }
 
   .font-display {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
+    font-weight: 600;
   }
 }

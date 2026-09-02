@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Canvas board background -->
+  <rect x="6" y="10" width="52" height="44" rx="7" fill="#f7f5ef" stroke="#2B6E5C" stroke-width="3"/>
+  <!-- Sketch lines suggesting a diagram -->
+  <path d="M16 28 Q22 22 28 28 Q34 34 40 28 Q46 22 50 26" fill="none" stroke="#2B6E5C" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Circle node -->
+  <circle cx="16" cy="32" r="5" fill="#2B6E5C" opacity="0.85"/>
+  <!-- Square node -->
+  <rect x="28" y="35" width="9" height="9" rx="2" fill="#F59E0B" opacity="0.9"/>
+  <!-- Small connector dot -->
+  <circle cx="49" cy="28" r="4" fill="#EF4444" opacity="0.8"/>
+  <!-- Microphone icon at bottom suggesting voice -->
+  <rect x="28" y="6" width="8" height="6" rx="3" fill="#2B6E5C"/>
+  <path d="M32 12 v3" stroke="#2B6E5C" stroke-width="2" stroke-linecap="round"/>
+</svg>
