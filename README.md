@@ -2,9 +2,7 @@
 
 Give an agent access — it builds the canvas via WebMCP. Replay it as a scroll-driven story.
 
-A [WebMCP Challenge](https://webmcp.org) submission.
-
-**Live demo:** https://storyboard-live-app.vercel.app
+**Live demo:** https://whiteboard-live-app.vercel.app
 
 ---
 
