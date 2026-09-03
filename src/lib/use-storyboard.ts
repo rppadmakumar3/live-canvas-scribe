@@ -1073,7 +1073,7 @@ export function useStoryboard() {
 
           if (planEl.type === "illustration" || planEl.type === "icon") {
             let svgContent = "";
-            if (asset.type === "local-svg" || asset.type === "iconify-svg") {
+            if (asset.type === "local-svg" || asset.type === "iconify-svg" || asset.type === "ai-svg") {
               svgContent = asset.value;
             }
             el = {
@@ -1613,7 +1613,9 @@ export function useStoryboard() {
         execute: async ({ semantic, label, position, size }: any) => {
           const asset = await resolveAsset(semantic);
           const svgContent =
-            asset.type === "local-svg" || asset.type === "iconify-svg" ? asset.value : "";
+            asset.type === "local-svg" || asset.type === "iconify-svg" || asset.type === "ai-svg"
+              ? asset.value
+              : "";
           return addIllustration(semantic, svgContent, position, size, label);
         },
       },
