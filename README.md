@@ -1,4 +1,4 @@
-# Storyboard Live
+# Whiteboard Live
 
 Give an agent access — it builds the canvas via WebMCP. Replay it as a scroll-driven story.
 
@@ -8,7 +8,7 @@ Give an agent access — it builds the canvas via WebMCP. Replay it as a scroll-
 
 ## What it does
 
-Storyboard Live is a live whiteboard with 32 tools registered on `document.modelContext`. Open the app in a WebMCP-enabled browser, give an AI agent access, and it discovers the tools and builds visual diagrams directly on the canvas — text blocks, shapes, icons, illustrations, equations, code blocks, and labeled connectors — in real time. When the agent is done, the canvas replays as a scroll-driven story, beat by beat.
+Whiteboard Live is a live whiteboard with 32 tools registered on `document.modelContext`. Open the app in a WebMCP-enabled browser, give an AI agent access, and it discovers the tools and builds visual diagrams directly on the canvas — text blocks, shapes, icons, illustrations, equations, code blocks, and labeled connectors — in real time. When the agent is done, the canvas replays as a scroll-driven story, beat by beat.
 
 **Key capabilities**
 

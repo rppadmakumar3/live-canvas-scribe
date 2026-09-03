@@ -110,7 +110,7 @@ export async function interpretWithOpenRouter(
         Authorization: `Bearer ${config.apiKey.trim()}`,
         "HTTP-Referer":
           typeof window !== "undefined" ? window.location.origin : "https://storyboard.live",
-        "X-Title": "Storyboard Live",
+        "X-Title": "Whiteboard Live",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

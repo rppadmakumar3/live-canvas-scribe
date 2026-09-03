@@ -11,13 +11,13 @@ import type { StickyColor } from "@/lib/storyboard";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Storyboard Live — Give an agent access, watch the canvas build itself" },
+      { title: "Whiteboard Live — Give an agent access, watch the canvas build itself" },
       {
         name: "description",
         content:
           "A live whiteboard with 32 WebMCP tools on document.modelContext. Give an agent access and watch it build diagrams, illustrations, and visual scenes directly on the canvas.",
       },
-      { property: "og:title", content: "Storyboard Live — Give an agent access, watch the canvas build itself" },
+      { property: "og:title", content: "Whiteboard Live — Give an agent access, watch the canvas build itself" },
       {
         property: "og:description",
         content:
@@ -114,7 +114,7 @@ function Index() {
     <div className="min-h-screen bg-background">
       <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
-          <h1 className="font-display text-2xl leading-none text-ink">Storyboard Live</h1>
+          <h1 className="font-display text-2xl leading-none text-ink">Whiteboard Live</h1>
           <p className="mt-1 text-xs text-ink-soft">
             Give an agent access — it builds the canvas via WebMCP.
           </p>

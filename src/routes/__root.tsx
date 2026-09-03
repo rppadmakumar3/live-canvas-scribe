@@ -77,10 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Storyboard Live — Give an agent access, watch the canvas build itself" },
+      { title: "Whiteboard Live — Give an agent access, watch the canvas build itself" },
       { name: "description", content: "A live whiteboard with 32 WebMCP tools on document.modelContext. Give an agent access and watch it build diagrams on the canvas in real time." },
-      { name: "author", content: "Storyboard Live" },
-      { property: "og:title", content: "Storyboard Live" },
+      { name: "author", content: "Whiteboard Live" },
+      { property: "og:title", content: "Whiteboard Live" },
       { property: "og:description", content: "32 WebMCP tools on document.modelContext. Give an agent access — it builds the canvas." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
