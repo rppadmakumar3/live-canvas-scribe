@@ -1,6 +1,6 @@
 # Storyboard Live
 
-Narrate by voice. The agent fills the canvas while you speak — then replay it as a scroll-driven story.
+Give an agent access — it builds the canvas via WebMCP. Replay it as a scroll-driven story.
 
 A [WebMCP Challenge](https://webmcp.org) submission.
 
@@ -10,20 +10,19 @@ A [WebMCP Challenge](https://webmcp.org) submission.
 
 ## What it does
 
-Storyboard Live is a live whiteboard powered by voice and AI. You speak an explanation; an agent interprets the meaning and places visual elements — text blocks, shapes, icons, diagrams, equations, code blocks — onto a shared canvas in real time. When you're done, the canvas replays as a scroll-driven story, beat by beat.
+Storyboard Live is a live whiteboard with 32 tools registered on `document.modelContext`. Open the app in a WebMCP-enabled browser, give an AI agent access, and it discovers the tools and builds visual diagrams directly on the canvas — text blocks, shapes, icons, illustrations, equations, code blocks, and labeled connectors — in real time. When the agent is done, the canvas replays as a scroll-driven story, beat by beat.
 
 **Key capabilities**
 
-- Voice narration via the browser's Web Speech API, with a typed-input fallback
-- AI interprets meaning (not just words) and builds a visual scene from a single LLM call
-- Elements: text, shapes, sticky notes, icons, illustrations, equations (KaTeX), code blocks, connectors with labels
-- Manual drag, resize, and edit on any element at any time — the canvas is always yours
-- Beat grouping: each narration pause closes a story segment
-- Scroll-driven story playback (`Preview as story`) — step through the canvas as it was built
+- 32 WebMCP tools on `document.modelContext` — any agent in a WebMCP-enabled browser can discover and call them
+- Agent builds the canvas: text, shapes, sticky notes, icons, illustrations, equations (KaTeX), code blocks, connectors
+- Human and agent share the same canvas — drag, resize, or edit any element the agent placed, at any time
+- Beat grouping: elements are grouped into named story segments automatically
+- Scroll-driven story playback (`Preview as story`) — step through the canvas beat by beat
 - Four canvas themes: Light, Dark, Sepia, Blackboard
 - Freehand drawing tools and an eraser
 - Full undo support (`Cmd/Ctrl + Z`)
-- 32 WebMCP tools registered on `document.modelContext` — inspectable via the in-app tools badge
+- Voice input and typed prompt as additional input options
 - State persisted to `localStorage` across sessions
 
 ---
@@ -35,7 +34,6 @@ Storyboard Live is a live whiteboard powered by voice and AI. You speak an expla
 | Meta-framework | TanStack Start |
 | UI | React 19 + Tailwind CSS 4 + Radix UI |
 | Build | Vite 8 |
-| AI model | minimax/minimax-m3:free |
 | Voice input | Web Speech API |
 | Sketch rendering | Rough.js |
 | Math rendering | KaTeX |
@@ -50,36 +48,30 @@ Storyboard Live is a live whiteboard powered by voice and AI. You speak an expla
 git clone <repository-url>
 cd live-canvas-scribe
 npm install
+npm run dev       # Start dev server at http://localhost:5173
 ```
 
-Create a `.env` file at the project root:
-
-```env
-VITE_OPENROUTER_API_KEY=your_openrouter_key_here
-```
-
-If `VITE_OPENROUTER_API_KEY` is absent, the app falls back to a local heuristic agent — still functional for demo topics like the water cycle.
+No environment variables required to run locally. Open in a WebMCP-enabled browser and give an agent access to start.
 
 ```bash
-npm run dev       # Start dev server at http://localhost:5173
 npm run build     # Production build
 npm run preview   # Preview the production build locally
 ```
 
 ---
 
-## How the AI pipeline works
+## How it works
 
 ```
-Voice narration
-  → LLM (1 call) → VisualScenePlan JSON
-  → Layout Engine (code) → pixel positions
-  → Asset Resolver (code + Iconify) → SVG / emoji
-  → WebMCP tools → Canvas state
-  → React renderers → visual result
+Agent (ChatGPT / Claude in WebMCP browser)
+  → discovers tools via document.modelContext
+  → calls WebMCP tools → Canvas state updates
+  → React renderers → visual result on canvas
+  → group_into_beat → story segment saved
+  → export_story → scroll-driven playback
 ```
 
-The LLM only decides *what* to show and how to arrange it conceptually. All pixel positioning and asset resolution is deterministic code — the model never calculates coordinates.
+All pixel positioning and asset resolution is deterministic code — the agent only decides *what* to show. It never calculates coordinates.
 
 ---
 
