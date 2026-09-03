@@ -101,9 +101,9 @@ export function StoryPlayback({ beats, elements, connectors, onClose }: Props) {
           <div className="flex h-[40vh] items-end pb-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                Scroll story
+                Session replay
               </p>
-              <h2 className="mt-2 font-display text-4xl text-ink">Your narration, replayable.</h2>
+              <h2 className="mt-2 font-display text-4xl text-ink">Your canvas session, replayable.</h2>
               <p className="mt-3 text-sm text-ink-soft">
                 Scroll down to step through each beat exactly as it was built.
               </p>

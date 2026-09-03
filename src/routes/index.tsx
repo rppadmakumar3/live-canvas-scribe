@@ -15,13 +15,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "A live whiteboard with 32 WebMCP tools on document.modelContext. An agent builds diagrams, illustrations, and story beats in real time — then replay as a scroll-driven story.",
+          "A live whiteboard with 32 WebMCP tools on document.modelContext. Give an agent access and watch it build diagrams, illustrations, and visual scenes directly on the canvas.",
       },
       { property: "og:title", content: "Storyboard Live — Give an agent access, watch the canvas build itself" },
       {
         property: "og:description",
         content:
-          "32 WebMCP tools on document.modelContext. Agent builds the canvas. You watch, adjust, replay.",
+          "32 WebMCP tools on document.modelContext. Give an agent access — it builds the canvas live.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
