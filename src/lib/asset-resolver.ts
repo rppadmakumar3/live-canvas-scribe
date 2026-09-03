@@ -766,6 +766,29 @@ const ICONIFY_MAP: Record<string, string> = {
   tax: "mdi:receipt",
   price: "mdi:tag-outline",
   budget: "mdi:calculator-variant-outline",
+  // Animals (twemoji — colorful SVG emoji icons)
+  rabbit: "twemoji:rabbit-face",
+  fox: "twemoji:fox",
+  wolf: "twemoji:wolf",
+  bear: "twemoji:bear-face",
+  lion: "twemoji:lion",
+  tiger: "twemoji:tiger-face",
+  eagle: "twemoji:eagle",
+  hawk: "twemoji:eagle",
+  snake: "twemoji:snake",
+  frog: "twemoji:frog",
+  fish: "twemoji:fish",
+  shark: "twemoji:shark",
+  bird: "twemoji:bird",
+  deer: "twemoji:deer",
+  bee: "twemoji:honeybee",
+  butterfly: "twemoji:butterfly",
+  // Nature (twemoji)
+  flower: "twemoji:cherry-blossom",
+  tree: "twemoji:deciduous-tree",
+  grass: "twemoji:herb",
+  mushroom: "twemoji:mushroom",
+  seed: "twemoji:seedling",
   // General
   checkmark: "mdi:check-circle-outline",
   warning: "mdi:alert-circle-outline",
@@ -911,23 +934,118 @@ const EMOJI_FALLBACK: Record<string, string> = {
   location: "📍",
   music: "🎵",
   art: "🎨",
+  // Animals
+  rabbit: "🐇",
+  fox: "🦊",
+  wolf: "🐺",
+  bear: "🐻",
+  lion: "🦁",
+  tiger: "🐯",
+  eagle: "🦅",
+  hawk: "🦅",
+  snake: "🐍",
+  frog: "🐸",
+  fish: "🐟",
+  shark: "🦈",
+  bird: "🐦",
+  cat: "🐱",
+  dog: "🐕",
+  deer: "🦌",
+  horse: "🐴",
+  cow: "🐄",
+  pig: "🐷",
+  chicken: "🐔",
+  grass: "🌱",
+  insect: "🦗",
+  bee: "🐝",
+  butterfly: "🦋",
+  mushroom: "🍄",
+  seed: "🌱",
+  flower: "🌸",
+  tree: "🌳",
 };
 
 // ── SVG cache for fetched Iconify assets ──────────────────────────────────────
 
 const svgCache = new Map<string, string>();
 
+// ── AI SVG Generator ─────────────────────────────────────────────────────────
+
+const AI_SVG_STORAGE_PREFIX = "wb-ai-svg:";
+
+async function generateSvgWithAI(semantic: string): Promise<string | null> {
+  const apiKey =
+    typeof window !== "undefined"
+      ? (import.meta as any).env?.VITE_OPENROUTER_API_KEY ?? ""
+      : "";
+  if (!apiKey) return null;
+
+  // Check localStorage cache — only generate once per semantic
+  const storageKey = `${AI_SVG_STORAGE_PREFIX}${semantic}`;
+  try {
+    const cached = localStorage.getItem(storageKey);
+    if (cached) return cached;
+  } catch { /* localStorage unavailable */ }
+
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "X-Title": "Whiteboard Live",
+      },
+      body: JSON.stringify({
+        model: "minimax/minimax-m3:free",
+        messages: [
+          {
+            role: "user",
+            content: `Create a simple, clean, colorful SVG illustration representing "${semantic}".
+Requirements:
+- viewBox="0 0 100 100"
+- Simple and immediately recognizable
+- Educational illustration style — friendly, clear shapes
+- 2 to 4 colors maximum, use filled shapes
+- No text or labels inside the SVG
+- Return ONLY the raw SVG code starting with <svg, nothing else`,
+          },
+        ],
+      }),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    const raw: string = data.choices?.[0]?.message?.content?.trim() ?? "";
+
+    // Extract SVG if wrapped in markdown fences
+    const svgMatch = raw.match(/<svg[\s\S]*<\/svg>/i);
+    const svg = svgMatch ? svgMatch[0] : raw;
+    if (!svg.startsWith("<svg")) return null;
+
+    const sanitized = sanitizeSvg(svg);
+
+    // Cache in localStorage so it's never generated again
+    try { localStorage.setItem(storageKey, sanitized); } catch { /* ignore */ }
+    svgCache.set(`ai:${semantic}`, sanitized);
+    return sanitized;
+  } catch {
+    return null;
+  }
+}
+
 // ── Resolution ────────────────────────────────────────────────────────────────
 
 export type ResolvedAsset =
   | { type: "local-svg"; value: string } // inline SVG string
   | { type: "iconify-svg"; value: string } // inline SVG string fetched from Iconify
+  | { type: "ai-svg"; value: string } // AI-generated SVG, cached in localStorage
   | { type: "emoji"; value: string } // emoji character
   | { type: "none" };
 
 /**
  * Resolve a semantic concept name to the best available visual asset.
- * Falls through local catalog → Iconify API → emoji → none.
+ * Falls through local catalog → Iconify API → AI-generated SVG → emoji → none.
  */
 export async function resolveAsset(semantic: string): Promise<ResolvedAsset> {
   const key = semantic.toLowerCase().replace(/[\s-]/g, "_");
@@ -957,7 +1075,11 @@ export async function resolveAsset(semantic: string): Promise<ResolvedAsset> {
     }
   }
 
-  // 3. Emoji fallback
+  // 3. AI-generated SVG via minimax — generated once, cached in localStorage forever
+  const aiSvg = await generateSvgWithAI(key);
+  if (aiSvg) return { type: "ai-svg", value: aiSvg };
+
+  // 4. Emoji fallback
   const emoji = EMOJI_FALLBACK[key];
   if (emoji) return { type: "emoji", value: emoji };
 
