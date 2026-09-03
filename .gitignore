@@ -41,3 +41,4 @@ Thumbs.db
 
 # Local test/debug scripts
 test-*.mjs
+.vercel

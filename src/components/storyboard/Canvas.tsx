@@ -582,10 +582,10 @@ export function Canvas({
         {elements.length === 0 && (
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3">
             <p className="max-w-sm text-center font-display text-2xl text-ink-soft/50">
-              The canvas fills itself while you talk.
+              Give an agent access — the canvas builds itself.
             </p>
             <p className="text-center text-sm text-ink-soft/35">
-              Start narrating · pick a Template · or type a narration below
+              Ask an agent via WebMCP · or use Voice input · or type a prompt below
             </p>
           </div>
         )}

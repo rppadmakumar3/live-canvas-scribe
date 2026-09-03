@@ -11,17 +11,17 @@ import type { StickyColor } from "@/lib/storyboard";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Storyboard Live — Narrate, and the canvas draws itself" },
+      { title: "Storyboard Live — Give an agent access, watch the canvas build itself" },
       {
         name: "description",
         content:
-          "Speak your explanation and watch an agent build the diagram live: text, shapes, sticky notes and labeled connectors, then replay it as a scroll-driven story.",
+          "A live whiteboard with 32 WebMCP tools on document.modelContext. An agent builds diagrams, illustrations, and story beats in real time — then replay as a scroll-driven story.",
       },
-      { property: "og:title", content: "Storyboard Live — Narrate, and the canvas draws itself" },
+      { property: "og:title", content: "Storyboard Live — Give an agent access, watch the canvas build itself" },
       {
         property: "og:description",
         content:
-          "A live canvas that fills itself while you present. Voice in, diagram out, scroll-story replay after.",
+          "32 WebMCP tools on document.modelContext. Agent builds the canvas. You watch, adjust, replay.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -116,7 +116,7 @@ function Index() {
         <div>
           <h1 className="font-display text-2xl leading-none text-ink">Storyboard Live</h1>
           <p className="mt-1 text-xs text-ink-soft">
-            Narrate. The agent fills the canvas while you speak.
+            Give an agent access — it builds the canvas via WebMCP.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -191,7 +191,7 @@ function Index() {
             }`}
           >
             {speech.listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-            {isProcessing ? "Drawing…" : speech.listening ? "Stop narrating" : "Start narrating"}
+            {isProcessing ? "Drawing…" : speech.listening ? "Stop" : "Voice input"}
           </button>
         </div>
       </header>
@@ -238,7 +238,7 @@ function Index() {
           <div className="rounded-2xl border border-border bg-chalk p-4">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
-                {speech.listening ? "Listening" : "Narration"}
+                {speech.listening ? "Listening" : "Prompt"}
               </p>
               <div className="flex items-center gap-2">
                 {speech.listening && (
@@ -288,7 +288,7 @@ function Index() {
                 <input
                   value={typed}
                   onChange={(e) => setTyped(e.target.value)}
-                  placeholder="Type a narration segment…"
+                  placeholder="Describe what to draw…"
                   className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                 />
                 <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">

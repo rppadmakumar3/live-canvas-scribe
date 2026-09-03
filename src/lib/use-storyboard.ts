@@ -926,7 +926,12 @@ export function useStoryboard() {
   const applyVisualScene = useCallback(
     async (plan: VisualScenePlan) => {
       if (!plan?.elements?.length) return { ok: false, reason: "empty plan" };
+      // Validate required fields — reject malformed plans from external agents
+      if (!plan.layout || !Array.isArray(plan.elements)) {
+        return { ok: false, reason: "invalid plan: missing layout or elements" };
+      }
       saveHistory(); // snapshot before any canvas mutations so Ctrl+Z can restore
+      try {
       const elements = plan.elements;
 
       // Build layout items for size hints
@@ -1204,9 +1209,16 @@ export function useStoryboard() {
 
       pushLog("apply_visual_scene", `${plan.layout} · ${elements.length} elements`);
       return { ok: true };
+      } catch (err) {
+        // Restore canvas to pre-call snapshot so a bad external plan never leaves it broken
+        undo();
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error("[Storyboard Live] apply_visual_scene failed, canvas restored:", msg);
+        return { ok: false, reason: msg };
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pushLog, groupIntoBeat, saveHistory],
+    [pushLog, groupIntoBeat, saveHistory, undo],
   );
 
   const clearAll = useCallback(() => {

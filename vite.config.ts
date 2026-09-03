@@ -17,7 +17,7 @@ export default async ({ command, mode }: ConfigEnv) => {
 
   if (command === "build") {
     const { nitro } = await import("nitro/vite");
-    plugins.push(nitro({ defaultPreset: "cloudflare-module" }));
+    plugins.push(nitro({ defaultPreset: "vercel" }));
   }
 
   return { plugins };
