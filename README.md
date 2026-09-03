@@ -4,6 +4,8 @@ Narrate by voice. The agent fills the canvas while you speak — then replay it 
 
 A [WebMCP Challenge](https://webmcp.org) submission.
 
+**Live demo:** https://storyboard-live-app.vercel.app
+
 ---
 
 ## What it does
